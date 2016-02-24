@@ -1,0 +1,167 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+a, a:hover, a:active {
+	color: white;
+	text-decoration: none;
+}
+
+.container-fluid {
+	position: relative;
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.nav {
+	position: absolute;
+	width: 250px;
+	height: 250px;
+	z-index: 999;
+	right: 0;
+	bottom: 0;
+}
+
+nav	{
+	position: absolute;
+	bottom: 0;
+	height: 100px;
+	width: 100%;
+	z-index: 999;
+}
+
+nav ul {
+	margin: 0;
+	padding: 0;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-direction: row /* works with row or column */
+	flex-direction: row;
+	-webkit-align-items: center;
+	align-items: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
+nav ul li {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	display: inline-block;
+	padding-right: 25px;
+}
+
+nav ul li:last-child {
+	padding-right: 0;
+}
+
+nav ul li .icons {
+	width: 75px;
+	height: 75px;
+	background: orange;
+	opacity: 0.6;
+	cursor: pointer;
+}
+
+nav ul li .icons.active {
+	opacity: 1;
+}
+
+section {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+section div.content {
+	color: white;
+	position: absolute;
+	bottom: 150px;
+	left: 100px;
+	width: 500px;
+}
+
+.vertical {
+    transform: rotate(-90deg);
+    position: absolute;
+    left: -85px;
+    top: 115px;
+    font-size: 160%;
+}
+
+.call-to-action {
+	padding: 5px 15px;
+    border: 1px solid white;
+    display: inline-block;
+    margin-left: 25px;
+	transform: skewX(-15deg);
+}
+
+.content p {
+	font-size: 1.2em;
+}
+
+/* Animations */
+.slide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.slide.ng-enter,
+.slide.ng-leave {
+	display: block !important;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slide.ng-enter {
+    left: 100%;
+}
+.slide.ng-enter-active {
+    left: 0;
+}
+.slide.ng-leave {
+    left: 0;
+}
+.slide.ng-leave-active {
+    left: -100%;
+}
+
+.slide.reverse.ng-enter,
+.slide.reverse.ng-leave {
+	display: block !important;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.slide.reverse.ng-enter {
+    left: -100%;
+}
+.slide.reverse.ng-enter-active {
+    left: 0;
+}
+.slide.reverse.ng-leave {
+    left: 0;
+}
+.slide.reverse.ng-leave-active {
+    left: 100%;
+}
+
+.fade {
+	opacity: 1;
+}
+
+.fade.ng-hide-add,
+.fade.ng-hide-remove {
+	display: block !important;
+    -webkit-transition: all 1s ease;
+	transition: all 1s ease;
+}
+
+.fade.ng-hide {
+	opacity: 0;
+}

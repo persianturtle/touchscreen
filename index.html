@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <script src="js/vendor/angular.js"></script>
+        <script src="js/vendor/angular-route.js"></script>
+        <script src="js/vendor/angular-touch.js"></script>
+        <script src="js/vendor/angular-animate.js"></script>
+        <script src="js/vendor/TweenMax.min.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/routes.js"></script>
+
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body class="container-fluid" ng-controller="UiController as vm" ng-swipe-right="vm.right();" ng-swipe-left="vm.left();">
+    	<ng-view autoscroll="true" class="slide" ng-class="{'reverse': !vm.rtl}"></ng-view>
+	    <nav class="fade" ng-show="vm.nav">
+			<ul>
+				<li ng-repeat="project in vm.slides.all">
+					<a href ng-click="vm.jump($index);">
+						<div class="icons" ng-class="{'active': vm.slides.all[vm.slides.current] === vm.slides.all[$index]}"></div>
+					</a>
+				</li>
+			</ul>
+		</nav>
+        <div ng-click="vm.nav = !vm.nav" class="nav"></div>
+    </body>
+</html>
