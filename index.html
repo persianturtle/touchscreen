@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/styles.css">
     </head>
-    <body class="container-fluid" ng-controller="UiController as vm" ng-swipe-right="vm.right();" ng-swipe-left="vm.left();">
+    <body class="container-fluid" ng-controller="UiController as vm" ng-swipe-right="vm.left();" ng-swipe-left="vm.right();">
     	<ng-view autoscroll="true" class="slide" ng-class="{'reverse': !vm.rtl}"></ng-view>
 	    <nav class="fade" ng-show="vm.nav">
 			<ul>
