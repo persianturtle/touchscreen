@@ -18,7 +18,9 @@
 
 		vm.nav = true;
 
-		vm.view = view;
+		vm.isLehmanVideoPlaying = true;
+
+		vm.viewingLehmanMilletSite = viewingLehmanMilletSite;
 
 		vm.slides = {
 			all: ['lehmanmillet', 'infinity', 'hypoxia', 'cologuard', 'beseengetscreened'],
@@ -43,6 +45,12 @@
 
 		$scope.$on('video:ended', function() {
 			next();
+		});
+
+		$scope.$watch('vm.slides.current', function(newVal) {
+			if (newVal === 0) {
+				vm.isLehmanVideoPlaying = true;
+			}
 		});
 
 		function next() {
@@ -88,7 +96,7 @@
 			$location.path(vm.slides.all[vm.slides.current]);
 		});
 
-		function view() {
+		function viewingLehmanMilletSite() {
 			$rootScope.$broadcast('video:remove');
 		}
 	}
