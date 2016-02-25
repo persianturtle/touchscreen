@@ -5,9 +5,9 @@
 
 	angular.module('app').controller('UiController', UiController);
 
-	angular.module('app').directive('rrVideoControls', rrVideoControls);
+	angular.module('app').directive('lmVideoControls', lmVideoControls);
 
-	angular.module('app').directive('rrVideoRemove', rrVideoRemove);
+	angular.module('app').directive('lmVideoRemove', lmVideoRemove);
 
 	function UiController($rootScope, $scope, $location, $interval, $timeout) {
 		var vm = this;
@@ -101,7 +101,7 @@
 		}
 	}
 
-	function rrVideoControls($rootScope) {
+	function lmVideoControls($rootScope) {
 		return {
 			restrict: 'A',
 			link: function(scope, element, attributes) {
@@ -114,9 +114,9 @@
 					}
 				});
 
-				video.onended = function() {
+				element.bind('ended', function() {
 					$rootScope.$broadcast('video:ended');
-				};
+				});
 
 				scope.$on('video:mute', function() {
 					video.muted = true;
@@ -129,7 +129,7 @@
 		};
 	}
 
-	function rrVideoRemove($timeout) {
+	function lmVideoRemove($timeout) {
 		return {
 			restrict: 'A',
 			link: function(scope, element, attributes) {
