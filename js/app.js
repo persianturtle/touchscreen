@@ -21,6 +21,10 @@
 		vm.isLehmanVideoPlaying = true;
 
 		vm.viewingLehmanMilletSite = viewingLehmanMilletSite;
+		
+		vm.toggleSound = toggleSound;
+
+		$rootScope.isMute = false;
 
 		vm.slides = {
 			all: ['lehmanmillet', 'infinity', 'hypoxia', 'cologuard', 'beseengetscreened'],
@@ -33,6 +37,15 @@
 
 		function right() {
 			next();
+		}
+
+		function toggleSound() {
+			if ($rootScope.isMute) {
+				unmute();
+			} else {
+				mute();
+			}
+			$rootScope.isMute = !$rootScope.isMute;
 		}
 
 		function mute() {
@@ -125,6 +138,14 @@
 				scope.$on('video:unmute', function() {
 					video.muted = false;
 				});
+
+				if ($rootScope.isMute) {
+					video.muted = true;
+				} else {
+					video.muted = false;
+				}
+
+				console.log($rootScope.isMute);
 			}
 		};
 	}

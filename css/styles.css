@@ -27,6 +27,15 @@ a, a:hover, a:active {
 	bottom: 0;
 }
 
+.sound {
+	position: absolute;
+	width: 250px;
+	height: 250px;
+	z-index: 999;
+	top: 0;
+	right: 0;
+}
+
 nav	{
 	position: absolute;
 	bottom: 0;
