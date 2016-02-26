@@ -1,12 +1,10 @@
 <section>
-	
-	<video autoplay height="1080px" lm-video-controls lm-video-remove>
-		<source src="projects/lehmanmillet/video/video.mov">
-	</video>
+
+	<img ng-show="vm.lehmanmillet.isImageOverlay" src="img/lehmanmillet.jpg">
 
 	<iframe width="1920" height="1080" src="http://lehmanmillet.com/"></iframe>
 
-	<div class="content" ng-show="vm.isLehmanVideoPlaying" ng-click="vm.isLehmanVideoPlaying = false; vm.viewingLehmanMilletSite();">
+	<div class="content" ng-show="vm.lehmanmillet.isImageOverlay" ng-click="vm.lehmanmillet.isImageOverlay = false;">
 		<h1>MEET LEHMANMILLET</h1>
 		<h2>and explore our work</h2>
 		<img class="arrow" src="img/arrow.png">

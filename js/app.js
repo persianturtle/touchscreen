@@ -18,13 +18,13 @@
 
 		vm.nav = true;
 
-		vm.isLehmanVideoPlaying = true;
+		vm.lehmanmillet = {
+			isImageOverlay: true
+		};
 
-		vm.viewingLehmanMilletSite = viewingLehmanMilletSite;
-		
 		vm.toggleSound = toggleSound;
 
-		$rootScope.isMute = false;
+		$rootScope.isMute = true;
 
 		vm.slides = {
 			all: ['lehmanmillet', 'infinity', 'hypoxia', 'cologuard', 'beseengetscreened'],
@@ -62,7 +62,7 @@
 
 		$scope.$watch('vm.slides.current', function(newVal) {
 			if (newVal === 0) {
-				vm.isLehmanVideoPlaying = true;
+				vm.lehmanmillet.isImageOverlay = true;
 			}
 		});
 
@@ -109,9 +109,6 @@
 			$location.path(vm.slides.all[vm.slides.current]);
 		});
 
-		function viewingLehmanMilletSite() {
-			$rootScope.$broadcast('video:remove');
-		}
 	}
 
 	function lmVideoControls($rootScope) {
