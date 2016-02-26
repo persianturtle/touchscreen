@@ -63,6 +63,9 @@
 		$scope.$watch('vm.slides.current', function(newVal) {
 			if (newVal === 0) {
 				vm.lehmanmillet.isImageOverlay = true;
+				$timeout(function() {
+					next();
+				}, 10000);
 			}
 		});
 
