@@ -97,9 +97,6 @@
 		});
 
 		function next() {
-			if ($rootScope.paused) {
-				return;
-			}
 			vm.rtl = true;
 			$timeout(function() {
 				if (vm.slides.current === vm.slides.all.length - 1) {
@@ -122,7 +119,6 @@
 		}
 
 		function jump(slideNum) {
-			vm.show.help = true;
 			if (vm.slides.current > slideNum) {
 				vm.rtl = false;
 			} else {
@@ -141,6 +137,7 @@
 
 		$scope.$watch('vm.slides.current', function() {
 			$location.path(vm.slides.all[vm.slides.current]);
+			vm.show.help = true;
 		});
 	}
 
