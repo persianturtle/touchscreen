@@ -36,6 +36,20 @@ a, a:hover, a:active {
 	right: 0;
 }
 
+.help {
+	position: absolute;
+    width: 250px;
+    height: 250px;
+}
+
+.help svg {
+	fill: white;
+	width: 100px;
+    height: 100px;
+    padding-top: 50px;
+    padding-left: 50px;
+}
+
 nav	{
 	position: absolute;
 	bottom: 0;

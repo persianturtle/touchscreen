@@ -1,4 +1,5 @@
 (function() {
+
 	'use strict';
 
 	angular.module('app', ['ngRoute', 'ngTouch', 'ngAnimate']);
@@ -9,6 +10,8 @@
 
 	angular.module('app').directive('lmVideoRemove', lmVideoRemove);
 
+	angular.module('app').directive('lmHelp', lmHelp);
+
 	function UiController($rootScope, $scope, $location, $interval, $timeout) {
 		var vm = this;
 
@@ -16,18 +19,29 @@
 		vm.left = left;
 		vm.jump = jump;
 
-		vm.nav = true;
+		vm.show = {
+			nav: true,
+			help: true,
+		};
 
 		vm.lehmanmillet = {
 			isImageOverlay: true
 		};
 
 		vm.toggleSound = toggleSound;
+		vm.help = help;
 
 		$rootScope.isMute = true;
+		$rootScope.paused = false;
 
 		vm.slides = {
-			all: ['lehmanmillet', 'infinity', 'hypoxia', 'cologuard', 'beseengetscreened'],
+			all: [
+				'lehmanmillet',
+				'infinity',
+				'hypoxia',
+				'cologuard',
+				'beseengetscreened'
+			],
 			current: 0
 		};
 
@@ -48,6 +62,12 @@
 			$rootScope.isMute = !$rootScope.isMute;
 		}
 
+		function help() {
+			$rootScope.paused = true;
+			$location.path('help');
+			vm.show.help = false;
+		}
+
 		function mute() {
 			$rootScope.$broadcast('video:mute');
 		}
@@ -60,16 +80,26 @@
 			next();
 		});
 
+		$scope.$on('help:exited', function() {
+			vm.show.help = true;
+			next();
+		});
+
 		$scope.$watch('vm.slides.current', function(newVal) {
 			if (newVal === 0) {
 				vm.lehmanmillet.isImageOverlay = true;
-				$timeout(function() {
+				vm.lehmanmillet.timer = $timeout(function() {
 					next();
 				}, 10000);
+			} else {
+				$timeout.cancel(vm.lehmanmillet.timer);
 			}
 		});
 
 		function next() {
+			if ($rootScope.paused) {
+				return;
+			}
 			vm.rtl = true;
 			$timeout(function() {
 				if (vm.slides.current === vm.slides.all.length - 1) {
@@ -92,6 +122,7 @@
 		}
 
 		function jump(slideNum) {
+			vm.show.help = true;
 			if (vm.slides.current > slideNum) {
 				vm.rtl = false;
 			} else {
@@ -111,7 +142,6 @@
 		$scope.$watch('vm.slides.current', function() {
 			$location.path(vm.slides.all[vm.slides.current]);
 		});
-
 	}
 
 	function lmVideoControls($rootScope) {
@@ -144,8 +174,6 @@
 				} else {
 					video.muted = false;
 				}
-
-				console.log($rootScope.isMute);
 			}
 		};
 	}
@@ -157,6 +185,18 @@
 				var video = element[0];
 				scope.$on('video:remove', function() {
 					element.remove();
+				});
+			}
+		};
+	}
+
+	function lmHelp($rootScope) {
+		return {
+			restrict: 'A',
+			link: function(scope, element, attributes) {
+				element.bind('click', function() {
+					$rootScope.paused = false;
+					$rootScope.$broadcast('help:exited');
 				});
 			}
 		};
