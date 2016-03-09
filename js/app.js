@@ -12,7 +12,9 @@
 
 	angular.module('app').directive('lmHelp', lmHelp);
 
-	function UiController($rootScope, $scope, $location, $interval, $timeout) {
+	angular.module('app').directive('lmScreensaver', lmScreensaver);
+
+	function UiController($rootScope, $scope, $location, $interval, $timeout, $http) {
 		var vm = this;
 
 		vm.right = right;
@@ -28,6 +30,11 @@
 			isImageOverlay: true
 		};
 
+		$http.get('config.json').then(function(response) {
+			vm.screensaver = response.data.screensaver;
+		});
+
+		vm.toggleScreensaver = toggleScreensaver;
 		vm.toggleSound = toggleSound;
 		vm.help = help;
 
@@ -53,6 +60,15 @@
 			next();
 		}
 
+		function toggleScreensaver() {
+			vm.slides.current = -1;
+			$rootScope.paused = true;
+			$location.path('screensaver');
+			vm.show.help = false;
+			vm.show.nav = false;
+			$timeout.cancel(vm.lehmanmillet.timer);
+		}2
+
 		function toggleSound() {
 			if ($rootScope.isMute) {
 				unmute();
@@ -63,9 +79,11 @@
 		}
 
 		function help() {
+			vm.slides.current = -1;
 			$rootScope.paused = true;
 			$location.path('help');
 			vm.show.help = false;
+			$timeout.cancel(vm.lehmanmillet.timer);
 		}
 
 		function mute() {
@@ -82,7 +100,13 @@
 
 		$scope.$on('help:exited', function() {
 			vm.show.help = true;
-			next();
+			home();
+		});
+
+		$scope.$on('screensaver:exited', function() {
+			vm.show.help = true;
+			vm.show.nav = true;
+			home();
 		});
 
 		$scope.$watch('vm.slides.current', function(newVal) {
@@ -127,6 +151,11 @@
 			$timeout(function() {
 				vm.slides.current = slideNum;
 			}, 10);
+			vm.show.help = true;
+		}
+
+		function home() {
+			jump(0);
 		}
 
 		function auto() {
@@ -137,7 +166,6 @@
 
 		$scope.$watch('vm.slides.current', function() {
 			$location.path(vm.slides.all[vm.slides.current]);
-			vm.show.help = true;
 		});
 	}
 
@@ -194,6 +222,18 @@
 				element.bind('click', function() {
 					$rootScope.paused = false;
 					$rootScope.$broadcast('help:exited');
+				});
+			}
+		};
+	}
+
+	function lmScreensaver($rootScope) {
+		return {
+			restrict: 'A',
+			link: function(scope, element, attributes) {
+				element.bind('click', function() {
+					$rootScope.paused = false;
+					$rootScope.$broadcast('screensaver:exited');
 				});
 			}
 		};

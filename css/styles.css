@@ -36,6 +36,15 @@ a, a:hover, a:active {
 	right: 0;
 }
 
+.screensaver {
+	position: absolute;
+	width: 250px;
+	height: 250px;
+	z-index: 999;
+	bottom: 0;
+	left: 0;
+}
+
 .help {
 	position: absolute;
     width: 250px;

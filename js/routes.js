@@ -16,11 +16,6 @@ function config($locationProvider, $routeProvider) {
 				return 'projects/' + params.project + '/project.html';
 			}
 		})
-		.when('/help', {
-			templateUrl: 'help.html',
-			controller: 'UiController',
-			controllerAs: 'vm'
-		})
 	;
 }
 
