@@ -135,7 +135,13 @@ h1 {
 }
 
 .precisioneffect {
-	font-weight: 300;
+	font-weight: 700;
+	font-family: 'Georgia';
+	color: #fff;
+}
+
+.precisioneffect span {
+	color: rgb(255,107,0);
 }
 
 h2 {
