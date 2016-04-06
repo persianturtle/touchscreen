@@ -51,8 +51,7 @@ a, a:hover, a:active {
     height: 250px;
 }
 
-.help svg {
-	fill: white;
+img.help {
 	width: 100px;
     height: 100px;
     padding-top: 50px;
