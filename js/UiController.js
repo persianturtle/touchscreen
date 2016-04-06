@@ -17,7 +17,8 @@
 		};
 
 		vm.precisioneffect = {
-			isImageOverlay: true
+			isImageOverlay: true,
+			view: view
 		};
 
 		$http.get('config.json').then(function(response) {
@@ -101,11 +102,17 @@
 
 		$scope.$watch('vm.slides.current', function(newVal) {
 			if (newVal === 0) {
-				vm.precisioneffect.isImageOverlay = true;
 				vm.precisioneffect.timer = $timeout(function() {
 					next();
 				}, 10000);
 			} else {
+				vm.precisioneffect.isImageOverlay = true;
+				$timeout.cancel(vm.precisioneffect.timer);
+			}
+		});
+
+		$scope.$watch('vm.precisioneffect.isImageOverlay', function(newVal) {
+			if (!newVal) {
 				$timeout.cancel(vm.precisioneffect.timer);
 			}
 		});
@@ -152,6 +159,12 @@
 			vm.slides.interval = $interval(function() {
 				next();
 			}, 10000);
+		}
+
+		function view() {
+			vm.show.help = false;
+			vm.show.nav = false;
+			vm.precisioneffect.isImageOverlay = false;
 		}
 
 		$scope.$watch('vm.slides.current', function() {
