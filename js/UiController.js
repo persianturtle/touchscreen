@@ -16,7 +16,7 @@
 			help: true,
 		};
 
-		vm.lehmanmillet = {
+		vm.precisioneffect = {
 			isImageOverlay: true
 		};
 
@@ -33,7 +33,7 @@
 
 		vm.slides = {
 			all: [
-				'lehmanmillet',
+				'precisioneffect',
 				'infinity',
 				'hypoxia',
 				'cologuard',
@@ -56,7 +56,7 @@
 			$location.path('screensaver');
 			vm.show.help = false;
 			vm.show.nav = false;
-			$timeout.cancel(vm.lehmanmillet.timer);
+			$timeout.cancel(vm.precisioneffect.timer);
 		}2
 
 		function toggleSound() {
@@ -73,7 +73,7 @@
 			$rootScope.paused = true;
 			$location.path('help');
 			vm.show.help = false;
-			$timeout.cancel(vm.lehmanmillet.timer);
+			$timeout.cancel(vm.precisioneffect.timer);
 		}
 
 		function mute() {
@@ -101,12 +101,12 @@
 
 		$scope.$watch('vm.slides.current', function(newVal) {
 			if (newVal === 0) {
-				vm.lehmanmillet.isImageOverlay = true;
-				vm.lehmanmillet.timer = $timeout(function() {
+				vm.precisioneffect.isImageOverlay = true;
+				vm.precisioneffect.timer = $timeout(function() {
 					next();
 				}, 10000);
 			} else {
-				$timeout.cancel(vm.lehmanmillet.timer);
+				$timeout.cancel(vm.precisioneffect.timer);
 			}
 		});
 

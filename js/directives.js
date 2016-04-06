@@ -4,8 +4,6 @@
 
 	angular.module('app').directive('videoControls', videoControls);
 
-	angular.module('app').directive('videoRemove', videoRemove);
-
 	angular.module('app').directive('help', help);
 
 	angular.module('app').directive('screensaver', screensaver);
@@ -40,18 +38,6 @@
 				} else {
 					video.muted = false;
 				}
-			}
-		};
-	}
-
-	function videoRemove($timeout) {
-		return {
-			restrict: 'A',
-			link: function(scope, element, attributes) {
-				var video = element[0];
-				scope.$on('video:remove', function() {
-					element.remove();
-				});
 			}
 		};
 	}
