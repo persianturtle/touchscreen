@@ -2,15 +2,15 @@
 
 	'use strict';
 
-	angular.module('app').directive('lmVideoControls', lmVideoControls);
+	angular.module('app').directive('videoControls', videoControls);
 
-	angular.module('app').directive('lmVideoRemove', lmVideoRemove);
+	angular.module('app').directive('videoRemove', videoRemove);
 
-	angular.module('app').directive('lmHelp', lmHelp);
+	angular.module('app').directive('help', help);
 
-	angular.module('app').directive('lmScreensaver', lmScreensaver);
+	angular.module('app').directive('screensaver', screensaver);
 
-	function lmVideoControls($rootScope) {
+	function videoControls($rootScope) {
 		return {
 			restrict: 'A',
 			link: function(scope, element, attributes) {
@@ -44,7 +44,7 @@
 		};
 	}
 
-	function lmVideoRemove($timeout) {
+	function videoRemove($timeout) {
 		return {
 			restrict: 'A',
 			link: function(scope, element, attributes) {
@@ -56,7 +56,7 @@
 		};
 	}
 
-	function lmHelp($rootScope) {
+	function help($rootScope) {
 		return {
 			restrict: 'A',
 			link: function(scope, element, attributes) {
@@ -68,7 +68,7 @@
 		};
 	}
 
-	function lmScreensaver($rootScope) {
+	function screensaver($rootScope) {
 		return {
 			restrict: 'A',
 			link: function(scope, element, attributes) {

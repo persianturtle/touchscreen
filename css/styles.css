@@ -47,15 +47,15 @@ a, a:hover, a:active {
 
 .help {
 	position: absolute;
-    width: 250px;
-    height: 250px;
+	width: 250px;
+	height: 250px;
 }
 
 img.help {
 	width: 100px;
-    height: 100px;
-    padding-top: 50px;
-    padding-left: 50px;
+	height: 100px;
+	padding-top: 50px;
+	padding-left: 50px;
 }
 
 nav	{
@@ -121,10 +121,10 @@ section div.content {
 
 .arrow {
 	width: 65px;
-    height: 65px;
-    position: absolute;
-    top: 40px;
-    left: 700px;
+	height: 65px;
+	position: absolute;
+	top: 40px;
+	left: 700px;
 }
 
 h1 {
@@ -147,48 +147,48 @@ h2 {
 
 /* Animations */
 .slide {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
 }
 .slide.ng-enter,
 .slide.ng-leave {
 	display: block !important;
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	transition: all 1s ease;
 }
 .slide.ng-enter {
-    left: 100%;
+	left: 100%;
 }
 .slide.ng-enter-active {
-    left: 0;
+	left: 0;
 }
 .slide.ng-leave {
-    left: 0;
+	left: 0;
 }
 .slide.ng-leave-active {
-    left: -100%;
+	left: -100%;
 }
 
 .slide.reverse.ng-enter,
 .slide.reverse.ng-leave {
 	display: block !important;
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
+	-webkit-transition: all 1s ease;
+	transition: all 1s ease;
 }
 .slide.reverse.ng-enter {
-    left: -100%;
+	left: -100%;
 }
 .slide.reverse.ng-enter-active {
-    left: 0;
+	left: 0;
 }
 .slide.reverse.ng-leave {
-    left: 0;
+	left: 0;
 }
 .slide.reverse.ng-leave-active {
-    left: 100%;
+	left: 100%;
 }
 
 .fade {
@@ -198,7 +198,7 @@ h2 {
 .fade.ng-hide-add,
 .fade.ng-hide-remove {
 	display: block !important;
-    -webkit-transition: all 1s ease;
+	-webkit-transition: all 1s ease;
 	transition: all 1s ease;
 }
 
