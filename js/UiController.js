@@ -17,8 +17,8 @@
 		};
 
 		vm.precisioneffect = {
-			isImageOverlay: true,
-			view: view
+			image: true,
+			cta: precisioneffect
 		};
 
 		$http.get('config.json').then(function(response) {
@@ -85,6 +85,18 @@
 			$rootScope.$broadcast('video:unmute');
 		}
 
+		$scope.$on('slider:next', function() {
+			next();
+		});
+
+		$scope.$on('slider:prev', function() {
+			prev();
+		});
+
+		$scope.$on('slider:jump', function(data, slide) {
+			jump(slide);
+		});
+
 		$scope.$on('video:ended', function() {
 			next();
 		});
@@ -106,12 +118,12 @@
 					next();
 				}, 10000);
 			} else {
-				vm.precisioneffect.isImageOverlay = true;
+				vm.precisioneffect.image = true;
 				$timeout.cancel(vm.precisioneffect.timer);
 			}
 		});
 
-		$scope.$watch('vm.precisioneffect.isImageOverlay', function(newVal) {
+		$scope.$watch('vm.precisioneffect.image', function(newVal) {
 			if (!newVal) {
 				$timeout.cancel(vm.precisioneffect.timer);
 			}
@@ -161,10 +173,10 @@
 			}, 10000);
 		}
 
-		function view() {
+		function precisioneffect() {
 			vm.show.help = false;
 			vm.show.nav = false;
-			vm.precisioneffect.isImageOverlay = false;
+			vm.precisioneffect.image = false;
 		}
 
 		$scope.$watch('vm.slides.current', function() {

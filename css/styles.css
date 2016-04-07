@@ -134,14 +134,9 @@ h1 {
 	margin-top: 50px;
 }
 
-.precisioneffect {
-	font-weight: 700;
-	font-family: 'Georgia';
-	color: #fff;
-}
-
-.precisioneffect span {
-	color: rgb(255,107,0);
+.precisioneffect-logo {
+	width: 470px;
+    margin-bottom: 13px;
 }
 
 h2 {
