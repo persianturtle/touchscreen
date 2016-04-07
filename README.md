@@ -217,16 +217,16 @@ function precisioneffect {
 Animations are automatic.
 
 Hide the navigation:
-`vm.show.nav = true;`
-
-Show the navigation:
 `vm.show.nav = false;`
 
+Show the navigation:
+`vm.show.nav = true;`
+
 Hide the help icon:
-`vm.show.help = true;`
+`vm.show.help = false;`
 
 Show the help icon:
-`vm.show.help = false;`
+`vm.show.help = true;`
 
 Next slide:
 `$rootScope.$broadcast('slider:next');`
