@@ -25,68 +25,96 @@ To clone the repo onto your local machine, run:
 $ git clone https://github.com/persianturtle/touchscreen.git
 ```
 
+Then run:
+```sh
+$ npm install
+```
+
+```sh
+$ bower install
+```
+
+```sh
+$ gulp
+```
+
 ## Application Structure
 
+Below is the application structure relevant to the user.  There are three main components:
+  1. config.json
+  2. projects/
+  3. screensavers/
 ```
 root
-│   index.html
 │   config.json
-│
-└─── css/    
-    │   styles.css
-│
-└─── img/    
-    │   ** all images **
-│
-└─── js/    
-    │   app.js
-    │   UiController.js
-    │   routes.js
-    │   directives.js
 │
 └───  projects/
     │
     └───  ** project name **/
         │   project.html
-        │
-        └───  video/  ** optional **
-            │   video.mp4
+        │   project.jpg ** optional **
+        │   project.mp4 ** optional **
+        │   project.css ** optional **
+        │   project.js ** optional **
 │
 └───  screensavers/
-  │
+    │ 
     │   ** all screensavers **
 ```
 
-`index.html` -- Entry point of the application.  Contains UI components including the navigation, the swipe features, and all four corner tap areas.
+A `project.html` file must be present within each project directory.
 
-`config.json` -- Configure the *current* screensaver's image path.
+Image files, video files, CSS and JavaScript files may be added as need.
 
-`js/UiController.js` -- Defines an object with all the project names which correspond to directories within the `project/` directory.
+##### Example `config.json`
+Project names must correspond to directories in `projects/`.
 
 ```
-vm.slides = {
-  all: [
-    'precisioneffect',
-    'infinity',
-    'hypoxia',
-    'cologuard',
-    'beseengetscreened'
+{
+  "projects": [
+    {
+      "name": "precisioneffect",
+      "timer": 60
+    },
+    { 
+      "name": "infinity",
+      "timer": 60
+    },
+    { 
+      "name": "hypoxia"
+    },
+    { 
+      "name": "cologuard"
+    },
+    { 
+      "name": "beseengetscreened"
+    }
   ],
-  ...
-};
+  "screensaver": "screensavers/Abbvie-Chintan.jpg"
+}
 ```
+
+A timer may be set, **in seconds**, for any project/slide.  If a project/slide is displaying a video, the next project/slide will be automatically shown after the video has ended, unless a timer has been set that is greater than or less than the length of the video.  If the timer length is greather than the length of the video, add the `loop` attribute on the video and it will loop until the timer triggers the next slide to be active.
 
 ## Adding and Removing Content
 
 To add a new project:
   1. Create a new directory within `projects/`
   2. Name the directory the name of the project
-  3. Add the project to `vm.slides.all[]` in `js/UiController.js`
-  4. Add a `project.html` file within `projects/** the project's name **/`.  The contents of this file will be displayed as a slide.
+  3. Add the project to `config.json`
+  4. Add a `project.html` file within the newly created project's directory.  The contents of this file will be displayed as a slide.
+  5. Add images, videos, CSS and/or JavaScript within this directory as needed. When adding CSS and/or JavaScript, run:
+
+```sh
+$ gulp
+```
+and refresh the browser.
+
+When adding CSS, be sure to prefix your selectors with you project name to **avoid overriding** any of the UI's CSS. Simply add the project name as a class on the `<section class="** placeholder **">` tag.
   
 To remove a project:
-  1. Remove the project's directory within `projects/`
-  2. Remove the project from `vm.slides.all[]` in `js/UiController.js`
+  1. Remove the project's directory within `projects/`.
+  2. Remove the project from `config.json`.
 
 The navigation will update automatically.
 
@@ -116,7 +144,7 @@ Let's be very sure that there are not any changes that have not been pulled to y
 ```
 <section>
 
-  <img src="img/** placeholder **.jpg">
+  <img src="projects/** project name **/** placeholder **.jpg">
 
 </section>
 ```
@@ -127,7 +155,7 @@ Let's be very sure that there are not any changes that have not been pulled to y
 ```
 <section>
 
-  <img src="img/** placeholder **.jpg">
+  <img src="projects/** project name **/** placeholder **.jpg">
 
   <div class="content" ng-click="something();">
     <h1>** placeholder **</h1>
@@ -145,7 +173,7 @@ Let's be very sure that there are not any changes that have not been pulled to y
 <section>
   
   <video autoplay height="1080px" video-controls>
-    <source src="projects/** placeholder **/video/video.mp4" type="video/mp4">
+    <source src="projects/** placeholder **/video.mp4" type="video/mp4">
   </video>
 
 </section>
@@ -156,7 +184,7 @@ Let's be very sure that there are not any changes that have not been pulled to y
 <section>
   
   <video autoplay height="1080px" video-controls>
-    <source src="projects/** placeholder **/video/video.mp4" type="video/mp4">
+    <source src="projects/** placeholder **/video.mp4" type="video/mp4">
   </video>
 
   <a href="** placeholder **">
@@ -172,38 +200,58 @@ Let's be very sure that there are not any changes that have not been pulled to y
 
 ### iFrame & Image Overlay
 
-**Note:** This requires a minor amount of configuration in `js/UiController.js`.
+**Note:** This requires a minor amount of JavaScript.
 
 #### How to Configure a Slide to Use an iFrame & Image Overlay
 
 Let's assume our project is `precisioneffect`.
 
-  1. Create an object in `js/UiController.js`.
+  1. Add `precisioneffect` to `config.json`.
+  2. Create a JavaScript file within `projects/precisioneffect/`. An example of the JavaScript file is shown below.
+  3. Add the `project/precisioneffect/project.html` file,  An example of HTML file is shown below.
 
+`project.js` file:
 ```
-vm.precisioneffect = {
-  image: true,
-  cta: precisioneffect
-};
-```
-  2. Create the function `precisioneffect` to handle the project's CTA.
-```
-function precisioneffect {
-  vm.show.help = false;
-  vm.show.nav = false;
-  vm.precisioneffect.image = false;
-}
-```
-  3. Add the `project/precisioneffect/project.html` file
+(function() {
 
+  'use strict';
+
+  angular.module('app').run(precisioneffect);
+
+  precisioneffect.$inject = ['$rootScope'];
+
+  function precisioneffect($rootScope) {
+      
+    $rootScope.project = {
+      precisioneffect: {
+        image: true,
+        cta: cta
+      }
+    };
+
+    function cta() {
+      $rootScope.$broadcast('timer:cancel');
+      $rootScope.$broadcast('help:hide');
+      $rootScope.$broadcast('nav:hide');
+      $rootScope.project.precisioneffect.image = false;
+    }
+
+  }
+
+})();
+```
+
+When the CTA is tapped, the `cta` function will execute.  An API has been provided to easily interact with the UI.  For complete API documentation, visit the [API Section](#API).
+
+`project.html` file:
 ```
 <section>
 
-  <img ng-show="vm.precisioneffect.image" src="img/** placeholder **.jpg">
+  <img ng-show="project.precisioneffect.image" src="projects/** project name **/** placeholder **.jpg">
 
-  <iframe ng-if="!vm.precisioneffect.image" width="1920" height="1080" src="** placeholder **"></iframe>
+  <iframe ng-if="!project.precisioneffect.image" width="1920" height="1080" src="** placeholder **"></iframe>
 
-  <div class="content" ng-show="vm.precisioneffect.image" ng-click="vm.precisioneffect.cta();">
+  <div class="content" ng-show="project.precisioneffect.image" ng-click="project.precisioneffect.cta();">
     <h1>** placeholder **</h1>
     <h2>** placeholder **</h2>
     <img class="arrow" src="img/arrow.png">
@@ -217,16 +265,16 @@ function precisioneffect {
 Animations are automatic.
 
 Hide the navigation:
-`vm.show.nav = false;`
+`$rootScope.$broadcast('nav:hide');`
 
 Show the navigation:
-`vm.show.nav = true;`
+`$rootScope.$broadcast('nav:show');`
 
 Hide the help icon:
-`vm.show.help = false;`
+`$rootScope.$broadcast('help:hide');`
 
 Show the help icon:
-`vm.show.help = true;`
+`$rootScope.$broadcast('help:hide');`
 
 Next slide:
 `$rootScope.$broadcast('slider:next');`
@@ -236,6 +284,9 @@ Previous slide:
 
 Jump to slide:
 `$rootScope.$broadcast('slider:jump', slideIndex);`
+
+Stop timers:
+`$rootScope.$broadcast(timer:cancel);`
 
 ## How to Pull Changes
 To pull changes on your local machine, run:

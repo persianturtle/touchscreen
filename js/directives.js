@@ -3,11 +3,10 @@
 	'use strict';
 
 	angular.module('app').directive('videoControls', videoControls);
-
 	angular.module('app').directive('help', help);
-
 	angular.module('app').directive('screensaver', screensaver);
 
+	videoControls.$inject = ['$rootScope'];
 	function videoControls($rootScope) {
 		return {
 			restrict: 'A',
@@ -42,6 +41,7 @@
 		};
 	}
 
+	help.$inject = ['$rootScope'];
 	function help($rootScope) {
 		return {
 			restrict: 'A',
@@ -54,6 +54,7 @@
 		};
 	}
 
+	screensaver.$inject = ['$rootScope'];
 	function screensaver($rootScope) {
 		return {
 			restrict: 'A',

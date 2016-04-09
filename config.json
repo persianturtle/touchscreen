@@ -1,1 +1,22 @@
-{"screensaver": "screensavers/Abbvie-Chintan.jpg"}
+{
+	"projects":	[
+		{
+			"name": "precisioneffect",
+			"timer": 60
+		},
+		{	
+			"name": "infinity",
+			"timer": 60
+		},
+		{	
+			"name": "hypoxia"
+		},
+		{	
+			"name": "cologuard"
+		},
+		{	
+			"name": "beseengetscreened"
+		}
+	],
+	"screensaver": "screensavers/Abbvie-Chintan.jpg"
+}

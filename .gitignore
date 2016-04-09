@@ -1,4 +1,6 @@
 .DS_Store
-/projects/*/video/
+/node_modules
+/bower_components
 /hypoxia
 /infinity
+/projects/**/*.mp4

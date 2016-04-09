@@ -4,7 +4,23 @@
 
 	angular.module('app').controller('UiController', UiController);
 
-	function UiController($rootScope, $scope, $location, $interval, $timeout, $http) {
+	UiController.$inject = [
+		'$rootScope',
+		'$scope',
+		'$location',
+		'$interval',
+		'$timeout',
+		'$http'
+	];
+
+	function UiController(
+		$rootScope,
+		$scope,
+		$location,
+		$interval,
+		$timeout,
+		$http
+	) {
 		var vm = this;
 
 		vm.right = right;
@@ -13,17 +29,14 @@
 
 		vm.show = {
 			nav: true,
-			help: true,
+			help: true
 		};
 
-		vm.precisioneffect = {
-			image: true,
-			cta: precisioneffect
+		vm.slides = {
+			all: [],
+			current: 0,
+			timer: []
 		};
-
-		$http.get('config.json').then(function(response) {
-			vm.screensaver = response.data.screensaver;
-		});
 
 		vm.toggleScreensaver = toggleScreensaver;
 		vm.toggleSound = toggleSound;
@@ -32,16 +45,77 @@
 		$rootScope.isMute = true;
 		$rootScope.paused = false;
 
-		vm.slides = {
-			all: [
-				'precisioneffect',
-				'infinity',
-				'hypoxia',
-				'cologuard',
-				'beseengetscreened'
-			],
-			current: 0
-		};
+		$http.get('config.json').then(function(response) {
+			vm.screensaver = response.data.screensaver;
+			angular.forEach(response.data.projects, function(project) {
+				if (!$rootScope.project[project.name]) {
+					$rootScope.project[project.name] = {};
+				}
+				vm[project.name] = {};
+				vm.slides.all.push(project.name);
+				vm.slides.timer.push(project.timer);
+			});
+			init();
+		});
+
+		$scope.$on('slider:next', function() {
+			next();
+		});
+
+		$scope.$on('slider:prev', function() {
+			prev();
+		});
+
+		$scope.$on('slider:jump', function(event, slide) {
+			jump(slide);
+		});
+
+		$scope.$on('video:ended', function() {
+			if (!$rootScope.isTimerActive) {
+				next();
+			}
+		});
+
+		$scope.$on('help:show', function() {
+			vm.show.help = true;
+		});
+
+		$scope.$on('help:hide', function() {
+			vm.show.help = false;
+		});
+
+		$scope.$on('nav:show', function() {
+			vm.show.nav = true;
+		});
+
+		$scope.$on('nav:hide', function() {
+			vm.show.nav = false ;
+		});
+
+		$scope.$on('help:exited', function() {
+			vm.show.help = true;
+			home();
+		});
+
+		$scope.$on('screensaver:exited', function() {
+			vm.show.help = true;
+			vm.show.nav = true;
+			home();
+		});
+
+		$scope.$on('timer:cancel', function() {
+			cancelTimer();
+		});
+
+		function init() {
+			$scope.$watch('vm.slides.current', function(index) {
+				$location.path(vm.slides.all[vm.slides.current]);
+				startTimer(index);
+				if (index > -1) {
+					$rootScope.project[vm.slides.all[index]].image = true;
+				}
+			});
+		}
 
 		function left() {
 			prev();
@@ -57,8 +131,7 @@
 			$location.path('screensaver');
 			vm.show.help = false;
 			vm.show.nav = false;
-			$timeout.cancel(vm.precisioneffect.timer);
-		}2
+		}
 
 		function toggleSound() {
 			if ($rootScope.isMute) {
@@ -74,7 +147,6 @@
 			$rootScope.paused = true;
 			$location.path('help');
 			vm.show.help = false;
-			$timeout.cancel(vm.precisioneffect.timer);
 		}
 
 		function mute() {
@@ -85,51 +157,8 @@
 			$rootScope.$broadcast('video:unmute');
 		}
 
-		$scope.$on('slider:next', function() {
-			next();
-		});
-
-		$scope.$on('slider:prev', function() {
-			prev();
-		});
-
-		$scope.$on('slider:jump', function(data, slide) {
-			jump(slide);
-		});
-
-		$scope.$on('video:ended', function() {
-			next();
-		});
-
-		$scope.$on('help:exited', function() {
-			vm.show.help = true;
-			home();
-		});
-
-		$scope.$on('screensaver:exited', function() {
-			vm.show.help = true;
-			vm.show.nav = true;
-			home();
-		});
-
-		$scope.$watch('vm.slides.current', function(newVal) {
-			if (newVal === 0) {
-				vm.precisioneffect.timer = $timeout(function() {
-					next();
-				}, 10000);
-			} else {
-				vm.precisioneffect.image = true;
-				$timeout.cancel(vm.precisioneffect.timer);
-			}
-		});
-
-		$scope.$watch('vm.precisioneffect.image', function(newVal) {
-			if (!newVal) {
-				$timeout.cancel(vm.precisioneffect.timer);
-			}
-		});
-
 		function next() {
+			vm.show.help = true;
 			vm.rtl = true;
 			$timeout(function() {
 				if (vm.slides.current === vm.slides.all.length - 1) {
@@ -141,9 +170,10 @@
 		}
 
 		function prev() {
+			vm.show.help = true;
 			vm.rtl = false;
 			$timeout(function() {
-				if (vm.slides.current === 0) {
+				if (vm.slides.current <= 0) {
 					vm.slides.current = vm.slides.all.length - 1;
 				} else {
 					vm.slides.current--;
@@ -161,27 +191,39 @@
 				vm.slides.current = slideNum;
 			}, 10);
 			vm.show.help = true;
+
+			if (vm.slides.current === slideNum) {
+				startTimer(slideNum);
+				if (slideNum > -1) {
+					$rootScope.project[vm.slides.all[slideNum]].image = true;
+				}
+			}
 		}
 
 		function home() {
 			jump(0);
 		}
 
-		function auto() {
-			vm.slides.interval = $interval(function() {
-				next();
-			}, 10000);
+		function startTimer(index) {
+			cancelTimer();
+			$rootScope.isTimerActive = false;
+			if (vm.slides.timer[index]) {
+				$rootScope.isTimerActive = true;
+				vm.timer = $timeout(
+					function() {
+						next();
+						$rootScope.isTimerActive = false;
+					}, vm.slides.timer[index] * 1000
+				);
+			}
 		}
 
-		function precisioneffect() {
-			vm.show.help = false;
-			vm.show.nav = false;
-			vm.precisioneffect.image = false;
+		function cancelTimer() {
+			angular.forEach(vm.slides.all, function(project) {
+				$timeout.cancel(vm.timer);
+			});
 		}
 
-		$scope.$watch('vm.slides.current', function() {
-			$location.path(vm.slides.all[vm.slides.current]);
-		});
 	}
 
 })();
